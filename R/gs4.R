@@ -8,10 +8,9 @@ function (ystar, x, idx, distr.k, sigma.k, distr.p0, mu.p0, sigma.p0)
         xj <- x[id]
         xbar <- sum(xj)/nstar[j]
         y2star <- rk(1, distr = distr.k, mu = xbar, sigma = sigma.k/sqrt(nstar[j]))
-        f.ratio <- fystar(y2star, xj, distr = distr.k, sigma = sigma.k, 
-            distr.p0 = distr.p0, mu.p0 = mu.p0, sigma.p0 = sigma.p0)/fystar(ystar[j], 
-            xj, distr = distr.k, sigma = sigma.k, distr.p0 = distr.p0, 
-            mu.p0 = mu.p0, sigma.p0 = sigma.p0)
+        f.ratio <- rfystar(y2star, ystar[j], xj, distr = distr.k, 
+            sigma = sigma.k, distr.p0 = distr.p0, mu.p0 = mu.p0, 
+            sigma.p0 = sigma.p0)
         k.ratio <- dk(ystar[j], distr = distr.k, mu = xbar, sigma = sigma.k/sqrt(nstar[j]))/dk(y2star, 
             distr = distr.k, mu = xbar, sigma = sigma.k/sqrt(nstar[j]))
         q2 <- min(1, f.ratio * k.ratio)

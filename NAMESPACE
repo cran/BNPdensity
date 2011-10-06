@@ -1,0 +1,2 @@
+import(stats,graphics)
+export("MixNRMI1", "MixNRMI2") 
