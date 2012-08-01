@@ -23,8 +23,8 @@ inversed gaussian process and the normalized stable process. }
     \tabular{ll}{
     Package: \tab BNPdensity\cr
     Type: \tab Package\cr
-    Version: \tab 0.7.8\cr
-    Date: \tab 2011-10-06\cr
+    Version: \tab 0.8.0\cr
+    Date: \tab 2011-10-20\cr
     License: \tab GPL version 2 or later\cr
     LazyLoad: \tab yes\cr
     }
