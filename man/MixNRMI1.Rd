@@ -11,10 +11,8 @@
 
 \usage{
     MixNRMI1(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0, Gama = 0.4,
-        distr.k = 1, distr.p0 = 1, mu.p0 = mean(x), sigma.p0 = 1.5 * sd(x),
-        asigma = 0.1, bsigma = 0.1, delta = 3, Delta = 2,
-        Nm = 50, Nx = 100, Nit = 1000, Pbi = 0.1,
-        epsilon = NULL, printtime = TRUE)
+        distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5, delta = 3, Delta = 2,
+        Nm = 50, Nx = 100, Nit = 1000, Pbi = 0.1, epsilon = NULL, printtime = TRUE)
 }
 
 \arguments{
@@ -29,9 +27,6 @@
         5 = Lognormal.}
   \item{distr.p0}{Integer number identifying the centering measure:
         1 = Normal; 2 = Gamma; 3 = Beta.}
-  \item{mu.p0}{Numeric constant. Prior mean of the centering measure.}
-  \item{sigma.p0}{Numeric constant. Prior standard deviation of the
-            centering measure.}
   \item{asigma}{Numeric positive constant. Shape parameter of the gamma prior
         on the standard deviation of the mixture kernel \code{distr.k}.}
   \item{bsigma}{Numeric positive constant. Rate parameter of the gamma prior
@@ -141,8 +136,7 @@ detach()
 # data(enzyme)
 # x <- enzyme
 # Enzyme1.out <- MixNRMI1(x, Alpha = 1, Beta = 0.007, Gama = 0.5, distr.k = 2,
-#                distr.p0 = 2, mu.p0 = 10, sigma.p0 = 10, asigma = 1, bsigma = 1,
-#                Nit = 5000, Pbi = 0.2)
+#                distr.p0 = 2, asigma = 1, bsigma = 1, Nit = 5000, Pbi = 0.2)
 # The output of this run is already loaded in the package
 # To show results run the following
 # Data
@@ -183,9 +177,8 @@ detach()
 # set.seed(123456)
 # data(galaxy)
 # x <- galaxy
-# Galaxy1.out <- MixNRMI1(x, Alpha = 1, Beta = 0.015, Gama = 0.5,
-#                distr.k = 1, distr.p0 = 2, mu.p0 = 20, sigma.p0 = 20,
-#                asigma = 1, bsigma = 1, Nit = 5000, Pbi = 0.2)
+# Galaxy1.out <- MixNRMI1(x, Alpha = 1, Beta = 0.015, Gama = 0.5, distr.k = 1,
+#                distr.p0 = 2, asigma = 1, bsigma = 1, Nit = 5000, Pbi = 0.2)
 # The output of this run is already loaded in the package
 # To show results run the following
 # Data

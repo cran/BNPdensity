@@ -1,21 +1,22 @@
 MixNRMI1 <-
 function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0, 
-    Gama = 0.4, distr.k = 1, distr.p0 = 1, mu.p0 = mean(x), sigma.p0 = 1.5 * 
-        sd(x), asigma = 0.1, bsigma = 0.1, delta = 3, Delta = 2, 
-    Nm = 50, Nx = 100, Nit = 1000, Pbi = 0.1, epsilon = NULL, 
-    printtime = TRUE) 
+    Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5, 
+    delta = 3, Delta = 2, Nm = 50, Nx = 100, Nit = 1000, Pbi = 0.1, 
+    epsilon = NULL, printtime = TRUE) 
 {
     if (is.null(distr.k)) 
         stop("Argument distr.k is NULL. Should be provided. See help for details.")
     if (is.null(distr.p0)) 
         stop("Argument distr.p0 is NULL. Should be provided. See help for details.")
-    if (is.null(mu.p0)) 
-        stop("Argument mu.p0 is NULL. Should be provided. See help for details.")
-    if (is.null(sigma.p0)) 
-        stop("Argument sigma.p0 is NULL. Should be provided. See help for details.")
-    tCurr <- tInit <- proc.time()
+    tInit <- proc.time()
     n <- length(x)
     y <- x
+    for (i in 1:(n/2)) {
+        y[i] <- mean(x[1:(n/2)])
+    }
+    for (i in (n/2):n) {
+        y[i] <- mean(x[(n/2):n])
+    }
     u <- 1
     sigma <- 1
     if (is.null(epsilon)) 
@@ -26,6 +27,8 @@ function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
     R <- seq(Nit)
     S <- seq(Nit)
     U <- seq(Nit)
+    mu.p0 = mean(x)
+    sigma.p0 = sd(x)
     for (j in seq(Nit)) {
         if (floor(j/100) == ceiling(j/100)) 
             cat("MCMC iteration", j, "of", Nit, "\n")
@@ -46,6 +49,9 @@ function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
         Jstar <- rgamma(r, nstar - Gama, Beta + u)
         Tau <- c(TauiC, ystar)
         J <- c(JiC, Jstar)
+        tt <- gsHP(ystar, r, distr.p0)
+        mu.p0 <- tt$mu.py0
+        sigma.p0 <- tt$sigma.py0
         y <- fcondYXA(x, distr = distr.k, Tau = Tau, J = J, sigma = sigma)
         Fxx[, j] <- fcondXA(xx, distr = distr.k, Tau = Tau, J = J, 
             sigma = sigma)

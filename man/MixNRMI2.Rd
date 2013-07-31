@@ -11,9 +11,8 @@
 
 \usage{
     MixNRMI2(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0, Gama = 0.4,
-    distr.k = 1, distr.py0 = 1, mu.py0 = mean(x), sigma.py0 = 1.5 * sd(x),
-    distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 10,
-    delta = 3, Delta = 2, Nm = 50, Nx = 100, Nit = 1000, Pbi = 0.1,
+    distr.k = 1, distr.py0 = 1, distr.pz0 = 2, mu.pz0 = 3, sigma.pz0 = sqrt(10),
+    delta = 4, kappa = 2, Delta = 2, Nm = 50, Nx = 100, Nit = 1000, Pbi = 0.1,
     epsilon = NULL, printtime = TRUE)
 }
 
@@ -29,10 +28,6 @@
             2 = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.}
   \item{distr.py0}{Integer number identifying the centering measure for
             locations: 1 = Normal; 2 = Gamma; 3 = Beta.}
-  \item{mu.py0}{Numeric constant. Prior mean of the centering measure
-        for locations.}
-  \item{sigma.py0}{Numeric constant. Prior standard deviation of the
-            centering measure for locations.}
   \item{distr.pz0}{Integer number identifying the centering measure for scales:
         2 = Gamma, currently the only option.}
   \item{mu.pz0}{Numeric constant. Prior mean of the centering measure for scales.}
@@ -40,6 +35,8 @@
             centering measure for scales.}
   \item{delta}{Numeric positive constant. Metropolis-Hastings proposal
             variation coefficient for sampling the scales.}
+  \item{kappa}{Numeric positive constant. Metropolis-Hastings proposal
+            variation coefficient for sampling the location parameters.}
   \item{Delta}{Numeric positive constant. Metropolis-Hastings proposal
         variation coefficient for sampling the latent U.}
   \item{Nm}{Integer constant. Number of jumps of the continuous component
@@ -139,8 +136,7 @@ detach()
 # data(enzyme)
 # x <- enzyme
 # Enzyme2.out <- MixNRMI2(x, Alpha = 1, Beta = 0.007, Gama = 0.5, distr.k = 2,
-#                 distr.py0 = 2, mu.py0 = 10, sigma.py0 = 10,
-#                 distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1,
+#                 distr.py0 = 2, distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1,
 #                 Nit = 5000, Pbi = 0.2)
 # The output of this run is already loaded in the package
 # To show results run the following
@@ -179,8 +175,7 @@ detach()
 # data(galaxy)
 # x <- galaxy
 # Galaxy2.out <- MixNRMI2(x, Alpha = 1, Beta = 0.015, Gama = 0.5, distr.k = 1,
-#                 distr.py0 = 2, mu.py0 = 20, sigma.py0 = 20,
-#                 distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1,
+#                 distr.py0 = 2, distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1,
 #                 Nit = 5000, Pbi = 0.2)
 # The output of this run is already loaded in the package
 # To show results run the following
