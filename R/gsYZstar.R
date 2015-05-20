@@ -31,10 +31,10 @@ function (ystar, zstar, nstar, rstar, idx, x, delta, kappa, distr.k,
                 flag <- 1
             }
             else {
+                flag <- 0
                 if (runif(1) <= q2) {
                   ystar[j] <- y2star
                   zstar[j] <- z2star
-                  flag <- 0
                 }
             }
         }

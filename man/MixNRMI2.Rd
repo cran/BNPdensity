@@ -12,7 +12,7 @@
 \usage{
     MixNRMI2(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0, Gama = 0.4,
     distr.k = 1, distr.py0 = 1, distr.pz0 = 2, mu.pz0 = 3, sigma.pz0 = sqrt(10),
-    delta = 4, kappa = 2, Delta = 2, Nm = 50, Nx = 100, Nit = 1000, Pbi = 0.1,
+    delta = 4, kappa = 2, Delta = 2, Meps = 0.01, Nx = 100, Nit = 500, Pbi = 0.1,
     epsilon = NULL, printtime = TRUE)
 }
 
@@ -39,8 +39,8 @@
             variation coefficient for sampling the location parameters.}
   \item{Delta}{Numeric positive constant. Metropolis-Hastings proposal
         variation coefficient for sampling the latent U.}
-  \item{Nm}{Integer constant. Number of jumps of the continuous component
-        of the unnormalized process.}
+  \item{Meps}{Numeric constant. Relative error of the jump sizes in the continuous
+    component of the process. Smaller values imply larger number of jumps.}
   \item{Nx}{Integer constant. Number of grid points for the evaluation of the
         density estimate.}
   \item{Nit}{Integer constant. Number of MCMC iterations.}
@@ -63,14 +63,7 @@ The details of the model are:
 where, \eqn{X_i}'s are the observed data, \eqn{(Y_i,Z_i)}'s are bivariate
 latent (location and scale) vectors, \code{k} is a parametric kernel parameterized
 in  terms of mean and standard deviation, \code{(Alpha, Beta, Gama; P_0)} are the
-parameters of the NGG prior with a bivariate \code{P_0} being the centering
-measure. In particular, \code{NGG(Alpha, 1, 0; P_0)} defines a Dirichlet process;
-\code{NGG(1, Beta, 1/2;P_0)} defines a Normalized inverse Gaussian process; and
-\code{NGG(1, 0, Gama; P_0)} defines a normalized stable process.
-The bivariate measure \code{P_0} is assumed to have independent components,
-that is, \eqn{P_0(Y,Z) = P_0(Y)*P_0(Z)}.
-
-The evaluation grid ranges from \code{min(x) - epsilon} to \code{max(x) + epsilon}.
+parameters of the NGG prior with a bivariate \code{P_0} being the centering measure with independent components, that is, \eqn{P_0(Y,Z) = P_0(Y)*P_0(Z)}. The parameters of \code{P_0(Y)} are assigned vague hyper prior distributions and \code{(mu.pz0,sigma.pz0)} are the hyper-parameters of \code{P_0(Z)}. In particular, \code{NGG(Alpha, 1, 0; P_0)} defines a Dirichlet process; \code{NGG(1, Beta, 1/2;P_0)} defines a Normalized inverse Gaussian process; and \code{NGG(1, 0, Gama; P_0)} defines a normalized stable process. The evaluation grid ranges from \code{min(x) - epsilon} to \code{max(x) + epsilon}.
 By default \code{epsilon=sd(x)/4}.
 }
 
@@ -86,6 +79,8 @@ By default \code{epsilon=sd(x)/4}.
         mixtures components (clusters).}
     \item{U}{Numeric vector of \code{length(Nit*(1-Pbi))} with the values of the
         latent variable U.}
+    \item{Nm}{Integer constant. Number of jumps of the continuous component of the 
+            unnormalized process.}
     \item{Nx}{Integer constant. Number of grid points for the evaluation of the
         density estimate.}
     \item{Nit}{Integer constant. Number of MCMC iterations.}
@@ -95,16 +90,14 @@ By default \code{epsilon=sd(x)/4}.
 }
 
 \references{
-1.- Barrios, E., Nieto-Barajas, L.E. and Pruenster, I. (2011). A study of
-normalized random measures mixture models. Preprint.
+1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prüenster, I. (2013). Modeling with Normalized Random Measure Mixture Models. Statistical Science. Vol. 28, No. 3, 313-334.
 
-
-2.- James, L.F., Lijoi, A. and Pruenster, I. (2009). Posterior analysis for
+2.- James, L.F., Lijoi, A. and Prüenster, I. (2009). Posterior analysis for
 normalized random measure with independent increments. Scand. J. Statist 36,
 76-97.
 }
 
-\author{Barrios, E., Nieto-Barajas, L.E. and Pruenster, I. }
+\author{Barrios, E., Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I.}
 
 \section{Warning }{The function is computing intensive. Be patient.}
 
@@ -132,12 +125,13 @@ detach()
 
 ### Example 2
 ## Do not run
-# set.seed(123456)
+# set.seed(150520)
 # data(enzyme)
 # x <- enzyme
-# Enzyme2.out <- MixNRMI2(x, Alpha = 1, Beta = 0.007, Gama = 0.5, distr.k = 2,
-#                 distr.py0 = 2, distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1,
-#                 Nit = 5000, Pbi = 0.2)
+#  Enzyme2.out <- MixNRMI2(x, Alpha = 1, Beta = 0.007, Gama = 0.5, 
+#                          distr.k = 2, distr.py0 = 2,
+#                          distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1, Meps=0.005,
+#                          Nit = 5000, Pbi = 0.2)
 # The output of this run is already loaded in the package
 # To show results run the following
 # Data
@@ -156,7 +150,7 @@ lines(xx,qx[,m],lty=3,col=4)
 # Plotting number of clusters
 par(mfrow=c(2,1))
 plot(R,type="l",main="Trace of R")
-hist(R,breaks=min(R-1):max(R),probability=TRUE)
+hist(R,breaks=min(R-0.5):max(R+0.5),probability=TRUE)
 # Plotting u
 par(mfrow=c(2,1))
 plot(U,type="l",main="Trace of U")
@@ -171,12 +165,13 @@ detach()
 
 ### Example 3
 ## Do not run
-# set.seed(123456)
+# set.seed(150520)
 # data(galaxy)
 # x <- galaxy
-# Galaxy2.out <- MixNRMI2(x, Alpha = 1, Beta = 0.015, Gama = 0.5, distr.k = 1,
-#                 distr.py0 = 2, distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1,
-#                 Nit = 5000, Pbi = 0.2)
+#  Galaxy2.out <- MixNRMI2(x, Alpha = 1, Beta = 0.015, Gama = 0.5, 
+#                          distr.k = 1, distr.py0 = 2,
+#                          distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1,  Meps=0.005,
+#                          Nit = 5000, Pbi = 0.2)
 # The output of this run is already loaded in the package
 # To show results run the following
 # Data
@@ -195,7 +190,7 @@ lines(xx,qx[,m],lty=3,col=4)
 # Plotting number of clusters
 par(mfrow=c(2,1))
 plot(R,type="l",main="Trace of R")
-hist(R,breaks=min(R-1):max(R),probability=TRUE)
+hist(R,breaks=min(R-0.5):max(R+0.5),probability=TRUE)
 # Plotting u
 par(mfrow=c(2,1))
 plot(U,type="l",main="Trace of U")

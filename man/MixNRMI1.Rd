@@ -12,7 +12,7 @@
 \usage{
     MixNRMI1(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0, Gama = 0.4,
         distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5, delta = 3, Delta = 2,
-        Nm = 50, Nx = 100, Nit = 1000, Pbi = 0.1, epsilon = NULL, printtime = TRUE)
+        Meps = 0.01, Nx = 100, Nit = 500, Pbi = 0.1, epsilon = NULL, printtime = TRUE)
 }
 
 \arguments{
@@ -35,10 +35,10 @@
     variation coefficient for sampling sigma.}
   \item{Delta}{Numeric positive constant. Metropolis-Hastings proposal
     variation coefficient for sampling the latent U.}
-  \item{Nm}{Integer constant. Number of jumps of the continuous component
-  of the unnormalized process.}
+  \item{Meps}{Numeric constant. Relative error of the jump sizes in the continuous
+    component of the process. Smaller values imply larger number of jumps.}
   \item{Nx}{Integer constant. Number of grid points for the evaluation of the
-  density estimate.}
+        density estimate.}
   \item{Nit}{Integer constant. Number of MCMC iterations.}
   \item{Pbi}{Numeric constant. Burn-in period proportion of Nit.}
   \item{epsilon}{Numeric constant. Extension to the evaluation grid range.
@@ -62,9 +62,7 @@ where \eqn{X_i}'s are the observed data, \eqn{Y_i}'s are latent (location)
 variables, \code{sigma} is the smoothing parameter, \code{k} is a parametric
 kernel parameterized in terms of mean and standard deviation,
 \code{(Alpha, Beta, Gama; P_0)} are the parameters of the
-NGG prior with \code{P_0} being the centering measure, and \code{(mu_0,sigma_0)}
-are the hyper-parameters of the gamma prior on the smoothing parameter
-\code{sigma}. In particular: \code{NGG(Alpha, 1, 0; P_0)} defines a Dirichlet
+NGG prior with \code{P_0} being the centering measure whose parameters are assigned vague hyper prior distributions, and \code{(asigma,bsigma)} are the hyper-parameters of the gamma prior on the smoothing parameter \code{sigma}. In particular: \code{NGG(Alpha, 1, 0; P_0)} defines a Dirichlet
 process; \code{NGG(1, Beta, 1/2; P_0)} defines a Normalized inverse Gaussian
 process; and \code{NGG(1, 0, Gama; P_0)} defines a normalized stable process.
 
@@ -86,6 +84,8 @@ By default \code{epsilon=sd(x)/4}.
         common standard deviation sigma.}
     \item{U}{Numeric vector of \code{length(Nit*(1-Pbi))} with the values of the
         latent variable U.}
+    \item{Nm}{Integer constant. Number of jumps of the continuous component of the 
+          unnormalized process.}
     \item{Nx}{Integer constant. Number of grid points for the evaluation of the
         density estimate.}
     \item{Nit}{Integer constant. Number of MCMC iterations.}
@@ -95,16 +95,14 @@ By default \code{epsilon=sd(x)/4}.
 }
 
 \references{
-1.- Barrios, E., Nieto-Barajas, L.E. and Pruenster, I. (2011). A study of
-normalized random measures mixture models. Preprint.
+1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prüenster, I. (2013). Modeling with Normalized Random Measure Mixture Models. Statistical Science. Vol. 28, No. 3, 313-334.
 
-
-2.- James, L.F., Lijoi, A. and Pruenster, I. (2009). Posterior analysis for
+2.- James, L.F., Lijoi, A. and Prüenster, I. (2009). Posterior analysis for
 normalized random measure with independent increments. Scand. J. Statist 36,
 76-97.
 }
 
-\author{Barrios, E., Nieto-Barajas, L.E. and Pruenster, I.}
+\author{Barrios, E., Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I.}
 
 \section{Warning }{The function is computing intensive. Be patient.}
 
@@ -132,11 +130,12 @@ detach()
 
 ### Example 2
 ## Do not run
-# set.seed(123456)
+# set.seed(150520)
 # data(enzyme)
 # x <- enzyme
-# Enzyme1.out <- MixNRMI1(x, Alpha = 1, Beta = 0.007, Gama = 0.5, distr.k = 2,
-#                distr.p0 = 2, asigma = 1, bsigma = 1, Nit = 5000, Pbi = 0.2)
+# Enzyme1.out <- MixNRMI1(x, Alpha = 1, Beta = 0.007, Gama = 0.5,  
+#                          distr.k = 2, distr.p0 = 2, asigma = 1, bsigma = 1, Meps=0.005, 
+#                          Nit = 5000, Pbi = 0.2)
 # The output of this run is already loaded in the package
 # To show results run the following
 # Data
@@ -155,7 +154,7 @@ lines(xx,qx[,m],lty=3,col=4)
 # Plotting number of clusters
 par(mfrow=c(2,1))
 plot(R,type="l",main="Trace of R")
-hist(R,breaks=min(R-1):max(R),probability=TRUE)
+hist(R,breaks=min(R-0.5):max(R+0.5),probability=TRUE)
 # Plotting sigma
 par(mfrow=c(2,1))
 plot(S,type="l",main="Trace of sigma")
@@ -174,11 +173,13 @@ detach()
 
 ### Example 3
 ## Do not run
-# set.seed(123456)
+# set.seed(150520)
 # data(galaxy)
 # x <- galaxy
-# Galaxy1.out <- MixNRMI1(x, Alpha = 1, Beta = 0.015, Gama = 0.5, distr.k = 1,
-#                distr.p0 = 2, asigma = 1, bsigma = 1, Nit = 5000, Pbi = 0.2)
+#  Galaxy1.out <- MixNRMI1(x, Alpha = 1, Beta = 0.015, Gama = 0.5, 
+#                          distr.k = 1, distr.p0 = 2, asigma = 1, bsigma = 1,  Meps=0.005, 
+#                          Nit = 5000, Pbi = 0.2)
+
 # The output of this run is already loaded in the package
 # To show results run the following
 # Data
@@ -197,7 +198,7 @@ lines(xx,qx[,m],lty=3,col=4)
 # Plotting number of clusters
 par(mfrow=c(2,1))
 plot(R,type="l",main="Trace of R")
-hist(R,breaks=min(R-1):max(R),probability=TRUE)
+hist(R,breaks=min(R-0.5):max(R+0.5),probability=TRUE)
 # Plotting sigma
 par(mfrow=c(2,1))
 plot(S,type="l",main="Trace of sigma")

@@ -23,8 +23,8 @@ inversed gaussian process and the normalized stable process. }
     \tabular{ll}{
     Package: \tab BNPdensity\cr
     Type: \tab Package\cr
-    Version: \tab 2013.8\cr
-    Date: \tab 2013-07-31\cr
+    Version: \tab 2015.5\cr
+    Date: \tab 2015-05-20\cr
     License: \tab GPL version 2 or later\cr
     LazyLoad: \tab yes\cr
     }
@@ -36,14 +36,13 @@ implementation. These functions intended for internal use only.
 }
 
 \author{
-Barrios, E., Nieto-Barajas, L.E. and Pruenster, I.
+Barrios, E., Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I.
 Maintainer: <ebarrios@itam.mx>
 Ernesto Barrios
 }
 
 \references{
-    Barrios, E., Nieto-Barajas, L. and Pruenster, I. (2011).
-    A study of normalized random measures mixture models. Preprint.
+  Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prüenster, I. (2013). Modeling with Normalized Random Measure Mixture Models. Statistical Science. Vol. 28, No. 3, 313-334.
 }
 \keyword{ package }
 

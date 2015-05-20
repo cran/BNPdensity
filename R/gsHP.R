@@ -7,8 +7,14 @@ function (ystar, rstar, distr)
         q1 <- 0.1
         q2 <- 0.1
         a <- q1 + rstar/2
-        b <- q2 + (rstar - 1) * var(ystar)/2 + s0 * rstar * (mean(ystar) - 
-            mu0)^2/2/(s0 + rstar)
+        if (rstar > 1) {
+            b <- q2 + (rstar - 1) * var(ystar)/2 + s0 * rstar * 
+                (mean(ystar) - mu0)^2/2/(s0 + rstar)
+        }
+        else {
+            b <- q2 + s0 * rstar * (mean(ystar) - mu0)^2/2/(s0 + 
+                rstar)
+        }
         t2 <- rgamma(1, shape = a, rate = b)
         a <- (s0 * mu0 + sum(ystar))/(s0 + rstar)
         b <- (s0 + rstar) * t2

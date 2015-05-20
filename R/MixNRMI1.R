@@ -1,7 +1,7 @@
 MixNRMI1 <-
 function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0, 
     Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5, 
-    delta = 3, Delta = 2, Nm = 50, Nx = 100, Nit = 1000, Pbi = 0.1, 
+    delta = 3, Delta = 2, Meps = 0.01, Nx = 100, Nit = 500, Pbi = 0.1, 
     epsilon = NULL, printtime = TRUE) 
 {
     if (is.null(distr.k)) 
@@ -27,6 +27,7 @@ function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
     R <- seq(Nit)
     S <- seq(Nit)
     U <- seq(Nit)
+    Nmt <- seq(Nit)
     mu.p0 = mean(x)
     sigma.p0 = sd(x)
     for (j in seq(Nit)) {
@@ -40,9 +41,9 @@ function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
         if (Gama != 0) 
             u <- gs3(u, n = n, r = r, alpha = Alpha, beta = Beta, 
                 gama = Gama, delta = Delta)
-        w <- cumsum(rgamma(Nm, 1, 1))
-        JiC <- MvInv(w, u = u, alpha = Alpha, beta = Beta, gama = Gama, 
-            N = 3001)
+        JiC <- MvInv(eps = Meps, u = u, alpha = Alpha, beta = Beta, 
+            gama = Gama, N = 50001)
+        Nm <- length(JiC)
         TauiC <- rk(Nm, distr = distr.p0, mu = mu.p0, sigma = sigma.p0)
         ystar <- gs4(ystar, x, idx, distr.k = distr.k, sigma.k = sigma, 
             distr.p0 = distr.p0, mu.p0 = mu.p0, sigma.p0 = sigma.p0)
@@ -62,6 +63,7 @@ function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
         R[j] <- r
         S[j] <- sigma
         U[j] <- u
+        Nmt[j] <- Nm
     }
     biseq <- seq(floor(Pbi * Nit))
     Fxx <- Fxx[, -biseq]
@@ -77,5 +79,5 @@ function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
         print(procTime <- proc.time() - tInit)
     }
     return(list(xx = xx, qx = qx, cpo = cpo, R = R, S = S, U = U, 
-        Nx = Nx, Nit = Nit, Pbi = Pbi, procTime = procTime))
+        Nm = Nmt, Nx = Nx, Nit = Nit, Pbi = Pbi, procTime = procTime))
 }

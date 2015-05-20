@@ -8,14 +8,14 @@ Determines the jump heights of an increasing additive process by inverting
 the M(v) function. 
 }
 \usage{
-MvInv(w, u, alpha, beta, gama, N)
+MvInv(eps, u, alpha, beta, gama, N)
 }
 \details{
 For internal use. 
 }
 \examples{
 ## The function is currently defined as
-function (w, u = 0.5, alpha = 1, beta = 1, gama = 1/2, N = 3001) 
+function (eps, u = 0.5, alpha = 1, beta = 1, gama = 1/2, N = 3001) 
 {
     n <- length(w)
     v <- rep(NA, n)
