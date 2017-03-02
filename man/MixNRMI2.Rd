@@ -10,10 +10,10 @@
 }
 
 \usage{
-    MixNRMI2(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0, Gama = 0.4,
-    distr.k = 1, distr.py0 = 1, distr.pz0 = 2, mu.pz0 = 3, sigma.pz0 = sqrt(10),
-    delta = 4, kappa = 2, Delta = 2, Meps = 0.01, Nx = 100, Nit = 500, Pbi = 0.1,
-    epsilon = NULL, printtime = TRUE)
+MixNRMI2(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0, 
+    Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2, mu.pz0 = 3, 
+    sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2, Meps = 0.01, 
+    Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = FALSE) 
 }
 
 \arguments{
@@ -29,7 +29,7 @@
   \item{distr.py0}{Integer number identifying the centering measure for
             locations: 1 = Normal; 2 = Gamma; 3 = Beta.}
   \item{distr.pz0}{Integer number identifying the centering measure for scales:
-        2 = Gamma, currently the only option.}
+        2 = Gamma. For more options use \code{\link{MixNRMI2cens}}.}
   \item{mu.pz0}{Numeric constant. Prior mean of the centering measure for scales.}
   \item{sigma.pz0}{Numeric constant. Prior standard deviation of the
             centering measure for scales.}
@@ -48,6 +48,7 @@
   \item{epsilon}{Numeric constant. Extension to the evaluation grid range.
         See details.}
   \item{printtime}{Logical. If TRUE, prints out the execution time.}
+  \item{extras}{Logical. If TRUE, gives additional objects: means, sigmas, weights and Js.}
 }
 \details{
 This generic function fits a normalized random measure (NRMI) mixture model for
@@ -79,6 +80,11 @@ By default \code{epsilon=sd(x)/4}.
         mixtures components (clusters).}
     \item{U}{Numeric vector of \code{length(Nit*(1-Pbi))} with the values of the
         latent variable U.}
+    \item{Allocs}{List of \code{length(Nit*(1-Pbi))} with the clustering allocations.}
+    \item{means}{List of \code{length(Nit*(1-Pbi))} with the cluster means (locations). Only if extras = TRUE.}
+    \item{sigmas}{Numeric vector of \code{length(Nit*(1-Pbi))} with the cluster standard deviations. Only if extras = TRUE.}
+    \item{weights}{List of \code{length(Nit*(1-Pbi))} with the mixture weights. Only if extras = TRUE.}
+    \item{Js}{List of \code{length(Nit*(1-Pbi))} with the unnormalized weights (jump sizes). Only if extras = TRUE.}
     \item{Nm}{Integer constant. Number of jumps of the continuous component of the 
             unnormalized process.}
     \item{Nx}{Integer constant. Number of grid points for the evaluation of the
@@ -101,7 +107,7 @@ normalized random measure with independent increments. Scand. J. Statist 36,
 
 \section{Warning }{The function is computing intensive. Be patient.}
 
-\seealso{\code{\link{MixNRMI1}}}
+\seealso{\code{\link{MixNRMI1}}, \code{\link{MixNRMI1cens}}, \code{\link{MixNRMI2cens}}}
 
 \examples{
 \dontrun{

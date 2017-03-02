@@ -1,15 +1,28 @@
 Package: BNPdensity
-Version: 2015.5
-Date: 2015-05-20
+Version: 2017.03
+Date: 2017-03-01
 Title: Ferguson-Klass Type Algorithm for Posterior Normalized Random
         Measures
-Author: Ernesto Barrios, Antonio Lijoi, Luis E. Nieto-Barajas and Igor Prünster. R implementation by Ernesto Barrios and Luis E. Nieto-Barajas.
-Maintainer: Ernesto Barrios <ebarrios@itam.mx>
-Description: Modeling mixtures with normalized random measures by a Ferguson-Klass type algorithm for posterior normalized random measures.
-Depends: R(>= 2.14.0)
+Authors@R: c(
+  person("Ernesto", "Barrios", role = c("aut", "cre"), email = "ebarrios@itam.mx"),
+  person("Antonio", "Lijoi", role = "aut"),
+  person("Luis E.", "Nieto-Barajas", role = "aut"),
+  person("Igor", "Prünster", role = "aut"),
+  person("Guillaume", "Kon Kam King", role = "ctb")
+  )
+Description: Bayesian nonparametric density estimation modeling mixtures by a Ferguson-Klass type algorithm for posterior normalized random measures.
+Depends: R(>= 3.3.0)
+LazyData: yes
+ByteCompile: yes
 License: GPL (>= 2)
 Encoding: UTF-8
-Packaged: 2015-06-07 15:21:45 UTC; ebarrios
 NeedsCompilation: no
+Packaged: 2017-03-02 00:51:32 UTC; ebarrios
+Author: Ernesto Barrios [aut, cre],
+  Antonio Lijoi [aut],
+  Luis E. Nieto-Barajas [aut],
+  Igor Prünster [aut],
+  Guillaume Kon Kam King [ctb]
+Maintainer: Ernesto Barrios <ebarrios@itam.mx>
 Repository: CRAN
-Date/Publication: 2015-06-08 18:00:35
+Date/Publication: 2017-03-02 21:06:54

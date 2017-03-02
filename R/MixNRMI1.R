@@ -1,8 +1,8 @@
 MixNRMI1 <-
 function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0, 
     Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5, 
-    delta = 3, Delta = 2, Meps = 0.01, Nx = 100, Nit = 500, Pbi = 0.1, 
-    epsilon = NULL, printtime = TRUE) 
+    delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500, 
+    Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = FALSE) 
 {
     if (is.null(distr.k)) 
         stop("Argument distr.k is NULL. Should be provided. See help for details.")
@@ -11,12 +11,9 @@ function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
     tInit <- proc.time()
     n <- length(x)
     y <- x
-    for (i in 1:(n/2)) {
-        y[i] <- mean(x[1:(n/2)])
-    }
-    for (i in (n/2):n) {
-        y[i] <- mean(x[(n/2):n])
-    }
+    xsort = sort(x)
+    y[seq(n/2)] <- mean(xsort[seq(n/2)])
+    y[-seq(n/2)] <- mean(xsort[-seq(n/2)])
     u <- 1
     sigma <- 1
     if (is.null(epsilon)) 
@@ -28,16 +25,23 @@ function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
     S <- seq(Nit)
     U <- seq(Nit)
     Nmt <- seq(Nit)
+    Allocs <- vector(mode = "list", length = Nit)
+    if (extras) {
+        means <- vector(mode = "list", length = Nit)
+        weights <- vector(mode = "list", length = Nit)
+        Js <- vector(mode = "list", length = Nit)
+    }
     mu.p0 = mean(x)
     sigma.p0 = sd(x)
     for (j in seq(Nit)) {
-        if (floor(j/100) == ceiling(j/100)) 
+        if (floor(j/500) == ceiling(j/500)) 
             cat("MCMC iteration", j, "of", Nit, "\n")
         tt <- comp1(y)
         ystar <- tt$ystar
         nstar <- tt$nstar
         r <- tt$r
         idx <- tt$idx
+        Allocs[[max(1, j - 1)]] <- idx
         if (Gama != 0) 
             u <- gs3(u, n = n, r = r, alpha = Alpha, beta = Beta, 
                 gama = Gama, delta = Delta)
@@ -54,17 +58,24 @@ function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
         mu.p0 <- tt$mu.py0
         sigma.p0 <- tt$sigma.py0
         y <- fcondYXA(x, distr = distr.k, Tau = Tau, J = J, sigma = sigma)
+        sigma <- gs5(sigma, x, y, distr = distr.k, asigma = asigma, 
+            bsigma = bsigma, delta = delta)
         Fxx[, j] <- fcondXA(xx, distr = distr.k, Tau = Tau, J = J, 
             sigma = sigma)
         fx[, j] <- fcondXA(x, distr = distr.k, Tau = Tau, J = J, 
             sigma = sigma)
-        sigma <- gs5(sigma, x, y, distr = distr.k, asigma = asigma, 
-            bsigma = bsigma, delta = delta)
         R[j] <- r
         S[j] <- sigma
         U[j] <- u
         Nmt[j] <- Nm
+        if (extras) {
+            means[[j]] <- Tau
+            weights[[j]] <- J/sum(J)
+            Js[[j]] <- J
+        }
     }
+    tt <- comp1(y)
+    Allocs[[Nit]] <- tt$idx
     biseq <- seq(floor(Pbi * Nit))
     Fxx <- Fxx[, -biseq]
     qx <- as.data.frame(t(apply(Fxx, 1, quantile, probs = probs)))
@@ -73,11 +84,26 @@ function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
     R <- R[-biseq]
     S <- S[-biseq]
     U <- U[-biseq]
-    cpo <- 1/apply(1/fx, 1, mean)
+    Allocs <- Allocs[-biseq]
+    if (extras) {
+        means <- means[-biseq]
+        weights <- weights[-biseq]
+        Js <- Js[-biseq]
+    }
+    cpo <- 1/apply(1/fx[, -biseq], 1, mean)
     if (printtime) {
         cat(" >>> Total processing time (sec.):\n")
         print(procTime <- proc.time() - tInit)
     }
-    return(list(xx = xx, qx = qx, cpo = cpo, R = R, S = S, U = U, 
-        Nm = Nmt, Nx = Nx, Nit = Nit, Pbi = Pbi, procTime = procTime))
+    if (extras) {
+        return(list(xx = xx, qx = qx, cpo = cpo, R = R, S = S, 
+            U = U, Js = Js, means = means, weights = weights, 
+            Allocs = Allocs, Nm = Nmt, Nx = Nx, Nit = Nit, Pbi = Pbi, 
+            procTime = procTime))
+    }
+    else {
+        return(list(xx = xx, qx = qx, cpo = cpo, R = R, S = S, 
+            U = U, Allocs = Allocs, Nm = Nmt, Nx = Nx, Nit = Nit, 
+            Pbi = Pbi, procTime = procTime))
+    }
 }

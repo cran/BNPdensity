@@ -13,7 +13,7 @@ Velocities of 82 galaxies diverging from our own galaxy.
     }
 }
 \source{
-\url{http://www.stats.bris.ac.uk/~peter/}
+\url{https://people.maths.bris.ac.uk/~mapjg/}
 }
 \references{
 Roeder, K. (1990) "Density estimation with confidence sets exemplified by 

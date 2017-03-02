@@ -10,9 +10,10 @@
 }
 
 \usage{
-    MixNRMI1(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0, Gama = 0.4,
-        distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5, delta = 3, Delta = 2,
-        Meps = 0.01, Nx = 100, Nit = 500, Pbi = 0.1, epsilon = NULL, printtime = TRUE)
+MixNRMI1(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0, 
+    Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5, 
+    delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500, 
+    Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = FALSE) 
 }
 
 \arguments{
@@ -44,6 +45,7 @@
   \item{epsilon}{Numeric constant. Extension to the evaluation grid range.
   See details.}
   \item{printtime}{Logical. If TRUE, prints out the execution time.}
+  \item{extras}{Logical. If TRUE, gives additional objects: means, weights and Js.}
 }
 
 \details{
@@ -84,6 +86,10 @@ By default \code{epsilon=sd(x)/4}.
         common standard deviation sigma.}
     \item{U}{Numeric vector of \code{length(Nit*(1-Pbi))} with the values of the
         latent variable U.}
+    \item{Allocs}{List of \code{length(Nit*(1-Pbi))} with the clustering allocations.}
+    \item{means}{List of \code{length(Nit*(1-Pbi))} with the cluster means (locations). Only if extras = TRUE.}
+    \item{weights}{List of \code{length(Nit*(1-Pbi))} with the mixture weights. Only if extras = TRUE.}
+    \item{Js}{List of \code{length(Nit*(1-Pbi))} with the unnormalized weights (jump sizes). Only if extras = TRUE.}
     \item{Nm}{Integer constant. Number of jumps of the continuous component of the 
           unnormalized process.}
     \item{Nx}{Integer constant. Number of grid points for the evaluation of the
@@ -106,7 +112,7 @@ normalized random measure with independent increments. Scand. J. Statist 36,
 
 \section{Warning }{The function is computing intensive. Be patient.}
 
-\seealso{\code{\link{MixNRMI2}}}
+\seealso{\code{\link{MixNRMI2}}, \code{\link{MixNRMI1cens}}, \code{\link{MixNRMI2cens}}}
 
 \examples{
 ### Example 1

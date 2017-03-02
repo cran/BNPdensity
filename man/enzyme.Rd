@@ -15,7 +15,7 @@ among a group of 245 unrelated individuals.
   }
 }
 \source{
-\url{http://www.stats.bris.ac.uk/~peter/}
+\url{https://people.maths.bris.ac.uk/~mapjg/}
 }
 \references{
 Bechtel, Y. C., Bonaiti-Pellie, C., Poisson, N., Magnette, J. and Bechtel, P.R. (1993). 

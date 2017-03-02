@@ -14,7 +14,7 @@
   }
 }
 \source{
-\url{http://www.stats.bris.ac.uk/~peter/}
+\url{https://people.maths.bris.ac.uk/~mapjg/}
 }
 \references{
 Crawford, S. L., DeGroot, M. H., Kadane, J. B. and Small, M. J. (1992). 
