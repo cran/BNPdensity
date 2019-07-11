@@ -4,22 +4,22 @@
 Continuous Jump heights function
 }
 \description{
-This function evaluates the M(v) function that determines the jump heights 
-in the "continuous" part of an increasing additive procecess. 
+This function evaluates the M(v) function that determines the jump heights
+in the "continuous" part of an increasing additive processes.
 }
 \usage{
 Mv(u, alpha, beta, gama, low, upp, N)
 }
 \details{
-For internal use. 
+For internal use.
 }
 \examples{
 ## The function is currently defined as
-function (u = 0.5, alpha = 1, beta = 1, gama = 1/2, low = 1e-04, 
-    upp = 10, N = 5001) 
+function (u = 0.5, alpha = 1, beta = 1, gama = 1/2, low = 1e-04,
+    upp = 10, N = 5001)
 {
     x <- -log(seq(from = exp(-low), to = exp(-upp), length = N))
-    f <- alpha/gamma(1 - gama) * x^(-(1 + gama)) * exp(-(u + 
+    f <- alpha/gamma(1 - gama) * x^(-(1 + gama)) * exp(-(u +
         beta) * x)
     dx <- diff(x)
     h <- (f[-1] + f[-N])/2
