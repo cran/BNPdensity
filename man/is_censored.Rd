@@ -16,6 +16,7 @@ TRUE if the data is censored
 Test if the data is censored
 }
 \examples{
+
 data(salinity)
 BNPdensity:::is_censored(salinity)
 }

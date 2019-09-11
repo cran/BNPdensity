@@ -7,7 +7,8 @@
 is_semiparametric(fit)
 }
 \arguments{
-\item{fit}{The result of the fit, obtained through the function MixNRMI1 or MixNRMI2.}
+\item{fit}{The result of the fit, obtained through the function MixNRMI1 or
+MixNRMI2.}
 }
 \value{
 TRUE if the fit is a semiparametric model
@@ -16,6 +17,7 @@ TRUE if the fit is a semiparametric model
 Tests if a fit is a semi parametric or nonparametric model.
 }
 \examples{
+
 set.seed(150520)
 data(acidity)
 x <- enzyme

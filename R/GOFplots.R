@@ -39,11 +39,16 @@ get_quantiles_semi_BNPdensity <- function(fit, ps = seq(-5, 5, length.out = 100)
   )
 }
 
+
+
 #' Plot the empirical and fitted CDF for non censored data.
 #'
-#' @param fit The result of the fit, obtained through the function MixNRMI1 or MixNRMI2.
+#'
+#' @param fit The result of the fit, obtained through the function MixNRMI1 or
+#' MixNRMI2.
 #' @return Plot of the empirical and fitted CDF for non censored data.
 #' @examples
+#'
 #' set.seed(150520)
 #' data(acidity)
 #' out <- MixNRMI1(acidity, extras = TRUE, Nit = 10)
@@ -60,17 +65,22 @@ plotCDF_noncensored <- function(fit) {
     cdf <- get_CDF_full_BNPdensity(fit = fit, xs = grid)
   }
   ggplot2::ggplot(data = data.frame(data = grid, CDF = cdf), aes_string(x = "data", y = "CDF")) +
-    geom_line(colour = "red") +
+    geom_line(color = "red") +
     theme_classic() +
     stat_ecdf(data = data.frame(data), aes(y = NULL), geom = "step") +
     xlab("Data")
 }
 
+
+
 #' Plot the Turnbull CDF and fitted CDF for censored data.
 #'
-#' @param fit The result of the fit, obtained through the function MixNRMI1cens or MixNRMI2cens.
+#'
+#' @param fit The result of the fit, obtained through the function MixNRMI1cens
+#' or MixNRMI2cens.
 #' @return Plot of the empirical and fitted CDF for non censored data.
 #' @examples
+#'
 #' set.seed(150520)
 #' data(salinity)
 #' out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
@@ -89,17 +99,21 @@ plotCDF_censored <- function(fit) {
     cdf <- get_CDF_full_BNPdensity(fit = fit, xs = grid)
   }
   ggplot2::ggplot(data = data.frame(data = grid, CDF = cdf), aes_string(x = "data", y = "CDF")) +
-    geom_line(colour = "red") +
+    geom_line(color = "red") +
     theme_classic() +
     geom_step(data = data.frame(x = c(Survival_object$time, max(grid)), y = c(1 - Survival_object$surv, 1)), aes_string(x = "x", y = "y")) +
     xlab("Data")
 }
 
+
+
 #' Plot the density and a histogram for non censored data.
 #'
-#' @inheritParams plotCDF_noncensored
+#' @param fit The result of the fit, obtained through the function MixNRMI1 or
+#' MixNRMI2.
 #' @return Plot of the density and a histogram for non censored data.
 #' @examples
+#'
 #' set.seed(150520)
 #' data(acidity)
 #' out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
@@ -110,11 +124,16 @@ plotPDF_noncensored <- function(fit) {
   return(p)
 }
 
+
+
 #' Plot the density for censored data.
 #'
-#' @inheritParams plotCDF_censored
+#'
+#' @param fit The result of the fit, obtained through the function MixNRMI1cens
+#' or MixNRMI2cens.
 #' @return Plot of the density and a histogram for non censored data.
 #' @examples
+#'
 #' set.seed(150520)
 #' data(salinity)
 #' out <- MixNRMI1cens(xleft = salinity$left, xright = salinity$right, extras = TRUE, Nit = 100)
@@ -129,17 +148,22 @@ plotPDF_censored <- function(fit) {
     pdf <- get_PDF_full_BNPdensity(fit = fit, xs = grid)
   }
   ggplot2::ggplot(data = data.frame(data = grid, PDF = pdf), aes_string(x = "data", y = "PDF")) +
-    geom_line(colour = "red") +
+    geom_line(color = "red") +
     theme_classic() +
     xlab("Data")
 }
 
 
+
+
 #' Plot the percentile-percentile graph for non censored data.
 #'
-#' @inheritParams plotCDF_noncensored
+#'
+#' @param fit The result of the fit, obtained through the function MixNRMI1 or
+#' MixNRMI2.
 #' @return Percentile-percentile plot for non censored data.
 #' @examples
+#'
 #' set.seed(150520)
 #' data(acidity)
 #' out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
@@ -155,18 +179,27 @@ pp_plot_noncensored <- function(fit) {
   }
   ggplot2::ggplot(data = data.frame(x = cdf, y = ecdf(data)(data)), aes_string(x = "x", y = "y")) +
     geom_point() +
-    geom_abline(slope = 1, intercept = 0, colour = "red") +
+    geom_abline(slope = 1, intercept = 0, color = "red") +
     theme_classic() +
     xlab("Theoretical percentiles") +
     ylab("Empirical percentiles")
 }
 
+
+
 #' Plot the quantile-quantile graph for non censored data.
 #'
-#' @inheritParams plotGOF
+#' This function may be rather slow for many iterations/many data because it
+#' relies on numerical inversion of the mixture Cumulative Distribution
+#' Function.
+#'
+#' @param fit The result of the fit, obtained through the function MixNRMI1 or
+#' MixNRMI2, MixMRMI1cens or MixMRMI2cens
+#' @param thinning_to How many iterations to compute the mean posterior
+#' quantiles
 #' @return quantile-quantile plot for non censored data.
-#' @details This function may be rather slow for many iterations/many data because it relies on numerical inversion of the mixture Cumulative Distribution Function.
 #' @examples
+#'
 #'
 #' ### Not run
 #' # set.seed(150520)
@@ -186,17 +219,23 @@ qq_plot_noncensored <- function(fit, thinning_to = 500) {
   }
   ggplot2::ggplot(data = data.frame(x = theoretical_quantiles, y = data), aes_string(x = "x", y = "y")) +
     geom_point() +
-    geom_abline(slope = 1, intercept = 0, colour = "red") +
+    geom_abline(slope = 1, intercept = 0, color = "red") +
     theme_classic() +
     xlab("Theoretical quantiles") +
     ylab("Empirical quantiles")
 }
 
-#' Plot the percentile-percentile graph for non censored data, using the Turnbull estimator the position of the percentiles.
+
+
+#' Plot the percentile-percentile graph for non censored data, using the
+#' Turnbull estimator the position of the percentiles.
 #'
-#' @inheritParams plotCDF_censored
+#'
+#' @param fit The result of the fit, obtained through the function MixNRMI1cens
+#' or MixNRMI2cens.
 #' @return Percentile-percentile graph using the Turnbull estimator
 #' @examples
+#'
 #' set.seed(150520)
 #' data(salinity)
 #' out <- MixNRMI1cens(xleft = salinity$left, xright = salinity$right, extras = TRUE, Nit = 100)
@@ -213,7 +252,7 @@ pp_plot_censored <- function(fit) {
   }
   ggplot2::ggplot(data = data.frame(x = cdf, y = 1 - Survival_object$surv), aes_string(x = "x", y = "y")) +
     geom_point() +
-    geom_abline(slope = 1, intercept = 0, colour = "red") +
+    geom_abline(slope = 1, intercept = 0, color = "red") +
     theme_classic() +
     xlab("Theoretical percentiles") +
     ylab("Empirical percentiles (Turnbull)")
@@ -230,15 +269,21 @@ compute_quantiles_from_Turnbull_estimate <- function(Survival_object) {
   return(sapply(percentiles_to_compute, function(p) grid[which_min_greater_than_0(cdf - p)]))
 }
 
+
+
 #' Plot the quantile-quantile graph for censored data.
 #'
-#' @inheritParams plotGOF
-#' @return quantile-quantile plot for non censored data.
-#' @details This function may be rather slow for many iterations/many data because it relies on numerical inversion of the mixture Cumulative Distribution Function.
-#' set.seed(150520)
-#' data(salinity)
-#' out <- MixNRMI1cens(xleft = salinity$left, xright = salinity$right, extras = TRUE, Nit = 100)
+#' This function may be rather slow for many iterations/many data because it
+#' relies on numerical inversion of the mixture Cumulative Distribution
+#' Function. set.seed(150520) data(salinity) out <- MixNRMI1cens(xleft =
+#' salinity$left, xright = salinity$right, extras = TRUE, Nit = 100)
 #' BNPdensity:::qq_plot_censored(out)
+#'
+#' @param fit The result of the fit, obtained through the function MixNRMI1 or
+#' MixNRMI2, MixMRMI1cens or MixMRMI2cens
+#' @param thinning_to How many iterations to compute the mean posterior
+#' quantiles
+#' @return quantile-quantile plot for non censored data.
 qq_plot_censored <- function(fit, thinning_to = 500) {
   # Survival_object <- survival::survfit(formula = survival::Surv(fit$data$left, fit$data$right, type = "interval2") ~ 1)
   # estimated_data <- sort(Survival_object$time)
@@ -255,23 +300,31 @@ qq_plot_censored <- function(fit, thinning_to = 500) {
   }
   ggplot2::ggplot(data = data.frame(x = theoretical_quantiles, y = Turnbull_quantiles), aes_string(x = "x", y = "y")) +
     geom_point() +
-    geom_abline(slope = 1, intercept = 0, colour = "red") +
+    geom_abline(slope = 1, intercept = 0, color = "red") +
     theme_classic() +
     xlab("Theoretical quantiles") +
     ylab("Empirical quantiles (Turnbull)")
 }
 
+
+
 #' Plot Goodness of fits graphical checks for non censored data
 #'
-#' @inheritParams plotGOF
-#' @return A density plot with histogram, a cumulative density plot with the empirical cumulative distribution, and a percentile-percentile plot.
 #'
+#' @param fit The result of the fit, obtained through the function MixNRMI1 or
+#' MixNRMI2, MixMRMI1cens or MixMRMI2cens
+#' @param qq_plot Whether to compute the QQ-plot
+#' @param thinning_to How many iterations to compute the mean posterior
+#' quantiles
+#' @return A density plot with histogram, a cumulative density plot with the
+#' empirical cumulative distribution, and a percentile-percentile plot.
 #' @examples
+#'
 #' set.seed(150520)
 #' data(acidity)
 #' out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
-#' BNPdensity:::plotGOF_noncensored(out)
-plotGOF_noncensored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
+#' BNPdensity:::GOFplots_noncensored(out)
+GOFplots_noncensored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
   CDFplot <- plotCDF_noncensored(fit)
   PDFplot <- plotPDF_noncensored(fit)
   pplot <- pp_plot_noncensored(fit)
@@ -284,17 +337,25 @@ plotGOF_noncensored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
   }
 }
 
+
+
 #' Plot Goodness of fits graphical checks for censored data
 #'
-#' @inheritParams plotGOF
-#' @return A density plot, a cumulative density plot with the Turnbull cumulative distribution, and a percentile-percentile plot.
 #'
+#' @param fit The result of the fit, obtained through the function MixNRMI1 or
+#' MixNRMI2, MixMRMI1cens or MixMRMI2cens
+#' @param qq_plot Whether to compute the QQ-plot
+#' @param thinning_to How many iterations to compute the mean posterior
+#' quantiles
+#' @return A density plot, a cumulative density plot with the Turnbull
+#' cumulative distribution, and a percentile-percentile plot.
 #' @examples
+#'
 #' set.seed(150520)
 #' data(salinty)
 #' out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
-#' BNPdensity:::plotGOF_censored(out)
-plotGOF_censored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
+#' BNPdensity:::GOFplots_censored(out)
+GOFplots_censored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
   CDFplot <- plotCDF_censored(fit)
   PDFplot <- plotPDF_censored(fit)
   pplot <- pp_plot_censored(fit)
@@ -307,24 +368,31 @@ plotGOF_censored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
   }
 }
 
+
+
 #' Plot Goodness of fits graphical checks for censored data
 #'
-#' @param fit The result of the fit, obtained through the function MixNRMI1 or MixNRMI2, MixNRMI1cens or MixNRMI2cens
-#' @param qq_plot Whether to compute the QQ-plot
-#' @param thinning_to How many iterations to compute the mean posterior quantiles
-#' @return A density plot, a cumulative density plot with the Turnbull cumulative distribution, a percentile-percentile plot, and potentially a quantile-quantile plot.
-#' @export
 #'
+#' @param fit The result of the fit, obtained through the function MixNRMI1 or
+#' MixNRMI2, MixMRMI1cens or MixMRMI2cens
+#' @param qq_plot Whether to compute the QQ-plot
+#' @param thinning_to How many iterations to compute the mean posterior
+#' quantiles
+#' @return A density plot, a cumulative density plot with the Turnbull
+#' cumulative distribution, a percentile-percentile plot, and potentially a
+#' quantile-quantile plot.
 #' @examples
+#'
 #' set.seed(150520)
 #' data(salinity)
 #' out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
-#' plotGOF(out)
-plotGOF <- function(fit, qq_plot = FALSE, thinning_to = 500) {
+#' GOFplots(out)
+#' @export GOFplots
+GOFplots <- function(fit, qq_plot = FALSE, thinning_to = 500) {
   if (is_censored(fit$data)) {
-    plotGOF_censored(fit, qq_plot = qq_plot, thinning_to = 500)
+    GOFplots_censored(fit, qq_plot = qq_plot, thinning_to = 500)
   }
   else {
-    plotGOF_noncensored(fit, qq_plot = qq_plot, thinning_to = 500)
+    GOFplots_noncensored(fit, qq_plot = qq_plot, thinning_to = 500)
   }
 }

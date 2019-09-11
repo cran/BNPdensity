@@ -4,23 +4,31 @@
 \alias{expected_number_of_components_Dirichlet}
 \title{Computes the expected number of components for a Dirichlet process.}
 \usage{
-expected_number_of_components_Dirichlet(n, Alpha, ntrunc = NULL)
+expected_number_of_components_Dirichlet(n, Alpha, ntrunc = NULL,
+  silence = TRUE)
 }
 \arguments{
 \item{n}{Number of data points}
 
 \item{Alpha}{Numeric constant. Total mass of the centering measure.}
 
-\item{ntrunc}{Level of truncation when computing the expectation. Defaults to n. If greater than n, it is fixed to n.}
+\item{ntrunc}{Level of truncation when computing the expectation. Defaults
+to n. If greater than n, it is fixed to n.}
+
+\item{silence}{Boolean. Whether to print the current calculation step for the Stable process, as the function can be long}
 }
 \value{
 A real value which approximates the expected number of components
 
-Reference: P. De Blasi, S. Favaro, A. Lijoi, R. H. Mena, I. Prünster, and M. Ruggiero, “Are gibbs-type priors the most natural generalization of the dirichlet process?,” IEEE Trans. Pattern Anal. Mach. Intell., vol. 37, no. 2, pp. 212–229, 2015.
+Reference: P. De Blasi, S. Favaro, A. Lijoi, R. H. Mena, I. Prünster, and M.
+Ruggiero, “Are gibbs-type priors the most natural generalization of the
+Dirichlet process?,” IEEE Trans. Pattern Anal. Mach. Intell., vol. 37, no.
+2, pp. 212–229, 2015.
 }
 \description{
 Computes the expected number of components for a Dirichlet process.
 }
 \examples{
+
 expected_number_of_components_Dirichlet(100, 1.2)
 }
