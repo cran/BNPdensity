@@ -1,7 +1,7 @@
-a4c52d9cbda395740e85d4817df14690 *CHANGES
-8f8edb3f4aeafb12b0f67f65fa8dcd98 *DESCRIPTION
+60e4430e5378aa477dc0fd13845a69b5 *CHANGES
+4e5a52507b44964bf90a4d1857f103ba *DESCRIPTION
 0355c72c036568e7e77a39bb64e88001 *NAMESPACE
-3f39d32f14ff0dda06f56a6962d30665 *R/BNPdensity-package.R
+0f3ee1a17a4feb1e22ebd6a07f55060b *R/BNPdensity-package.R
 0a2bcc5591a5ec6e7a1d317413ff2b29 *R/GOFplots.R
 9c038a51aee9faf92ba667e72885472a *R/MixNRMI1.R
 a4508ece2f66e1f0d5f15052ce999932 *R/MixNRMI1cens.R
@@ -15,7 +15,7 @@ a4508ece2f66e1f0d5f15052ce999932 *R/MixNRMI1cens.R
 5ea99f0648c737c1d845827f1c6f6442 *R/comment_on_NRMI_type.R
 e547bade763c5a2ed5babb1d7fd6022f *R/comp1.R
 32ce349cde218bb7b1b91f2334dcac21 *R/comp2.R
-172438d26279d2982bf1c18bb643cbb5 *R/convert_fit_to_MCMC_chain.R
+e85937ee55ab146339ccb4ac6b7d654e *R/convert_fit_to_MCMC_chain.R
 26a58ce01b48ea701443f992780c1433 *R/cpo.R
 83f1ca92116df603595165ff926c951f *R/dhalfcauchy.R
 5eadfb9ac1fa5f142a2a611362122fb8 *R/dhalfnorm.R
@@ -43,8 +43,8 @@ e609370721a3074bccc63283b6e5a3ca *R/gs3.R
 edacc7006c20c490a7a069bbc11a21a6 *R/gsYZstar.R
 be3ecf011abd798764374138cef80276 *R/gsYZstarcens2.R
 69f2e9a295536bea57e6b9e47089b133 *R/helper_functions.R
-7b985ee9adbad420805a8f4a94996451 *R/mixture_density_functions.R
-583b8d5a2a01c56efa890145c58900df *R/multMixNRMI.R
+615daa3f420a553df0ae4fc646ac1845 *R/mixture_density_functions.R
+0ace0f71ad409e464599d97d710aa2c0 *R/multMixNRMI.R
 92a5e6d72547a8783c3ec67cf5c35f90 *R/noncentral_generalised_factorial_coefficient.R
 61cf4f325b4993085d0e95cd3c8f0abe *R/p0.R
 61f9cbe5987c93b1ce3970dac2bbac4a *R/phalfcauchy.R
@@ -52,7 +52,7 @@ be3ecf011abd798764374138cef80276 *R/gsYZstarcens2.R
 678cb320e390d62e47d5e04abdce4557 *R/phalft.R
 26816af5fccef315f8b6b7a4dc9d0f5c *R/pk.R
 d88aface7120b671e62f223913d0093f *R/plotfit.R
-97c4af091787f28ce43ffec38e486f07 *R/posterior_clustering_analysis.R
+472e28c97c26efd53a724ccb7437bcdd *R/posterior_clustering_analysis.R
 15947a0e27577a4f764456b7f7abef74 *R/prepare_independent_rng.R
 9b89dad2a60480c86bdf547e0e0a3cb4 *R/pt_.R
 a8cfa6fe2014227d11586d0bfc5fda2a *R/ptnorm.R
@@ -76,7 +76,7 @@ b2534a6678a974069d2d3a75452ad0d4 *R/rt_.R
 d4cecdfc9b97bcbc1161df6779a78183 *R/sysdata.rda
 52019e84424c7fdef099b11e7fe50ec2 *R/thresholdGG.R
 0616421cd8975e17419f57b428263273 *R/traceplot.R
-5f3793f0c7956dd8c0cd67917f8c53c8 *README.md
+b59e7141d6218410a2782810db5330b5 *README.md
 d41d8cd98f00b204e9800998ecf8427e *TODO
 17ce318093a22c87ef2684073d8a59ce *data/Enzyme1.out.rda
 e54a0a6ce38302bd4bd49093f37cf6e7 *data/Enzyme2.out.rda
@@ -110,7 +110,7 @@ f2529d6138ee79e665960e1ba936f95e *man/censor_code_rl.Rd
 e117ab6aeaf1994425f1e303f208efbb *man/comp1.Rd
 abc173039128c2ac9f8497ca56d711ec *man/comp2.Rd
 c1375dd9969d13da9949bd30e1b2b7fb *man/compute_optimal_clustering.Rd
-58bafea453b6a489c3212a30f27c2523 *man/compute_thinning_grid.Rd
+385b295e83fafe8322829a611cb2a52b *man/compute_thinning_grid.Rd
 ee8ca84f0cb9c30ee50caa1d18e1e41a *man/convert_to_mcmc.Rd
 9a27c4bd25d4f878b5cdf2a5939e6b05 *man/cpo.Rd
 45f97e43360966479bbe8641f2dda528 *man/dhalfcauchy.Rd
@@ -121,7 +121,7 @@ a78a06693c5da6ae0d3f24de45b2dc53 *man/dkcens2.Rd
 e14a245330eb0619d07c3562e843a424 *man/dkcens2_1val.Rd
 57bcffd83d1d63785cb2924b73e480fe *man/dt_.Rd
 46d186be147ff96f74474a6830512499 *man/dtnorm.Rd
-67589321322f43af4df9ee811f64b943 *man/enzyme.Rd
+548282da2033a3171be0b7d5564f4a55 *man/enzyme.Rd
 d22a4658306b3546b5647ce50950e03b *man/expected_number_of_components_Dirichlet.Rd
 61ffb3353ca9e1832ff5705526b4650d *man/expected_number_of_components_stable.Rd
 f9179683c980855cd7386ea41b8848d4 *man/fcondXA.Rd
@@ -173,7 +173,7 @@ f4ef3d625f498b108fbb817e561c41d9 *man/plot.multNRMI.Rd
 1e3bcb93e6878a5ed1cc54da4ab69c0c *man/plotCDF_noncensored.Rd
 a0516c92508b34d9ded88fa28de11e41 *man/plotPDF_censored.Rd
 8c6f96a36a5e54ad2cc075cd681fbda2 *man/plotPDF_noncensored.Rd
-76011c297532a0b8650320c5f476eb76 *man/plot_clustering_and_CDF.Rd
+eb9336f7b884a22f4f44e46d02ddc79f *man/plot_clustering_and_CDF.Rd
 685ede84752a9f8b98e3acd8e3427b31 *man/plot_prior_number_of_components.Rd
 6727a74e36b8eed008c7cf3fedf38cae *man/plotfit_censored.Rd
 62dd26da6b951618436dc4a4dc5b2f5b *man/plotfit_noncensored.Rd
@@ -204,7 +204,7 @@ f8d266b9d7ba0dda15665930037ac60f *man/rhalft.Rd
 07b6f8c8153a44d7ccc18e804e05be39 *man/rk.Rd
 5605485e3782016aa29adf60f00b8d0e *man/rt_.Rd
 bd90d4e9165af930e22d7e4e9144317a *man/rtnorm.Rd
-b120bd3d24b28baaeefdf7f64cfb8a16 *man/salinity.Rd
+52cdbd4d3866eba2e219a715b807a4e7 *man/salinity.Rd
 27fe577e645318b0311e6af31837d97e *man/summary.NRMI1.Rd
 87b6469f13d61c6595c99ae7e3a8a34a *man/summary.NRMI1cens.Rd
 04f2cf027d9ca47dbd92ad5151e1d1b8 *man/summary.NRMI2.Rd
