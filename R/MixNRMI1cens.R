@@ -41,17 +41,15 @@
 #' @param Kappa Numeric positive constant. See details.
 #' @param Gama Numeric constant. \eqn{0\leq \texttt{Gama} \leq 1}{0 <= Gama <=
 #' 1}.  See details.
-#' @param distr.k Integer number identifying the mixture kernel: 1 = Normal; 2
-#' = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
-#' @param distr.p0 Integer number identifying the centering measure: 1 =
-#' Normal; 2 = Gamma; 3 = Beta.
+#' @param distr.k The distribution name for the kernel. Allowed names are "normal", "gamma", "beta", "double exponential", "lognormal" or their common abbreviations "norm", "exp", or an integer number identifying the mixture kernel: 1 = Normal; 2 = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
+#' @param distr.p0 The distribution name for the centering measure. Allowed names are "normal", "gamma", "beta", or their common abbreviations "norm", "exp", or an integer number identifying the centering measure: 1 = Normal; 2 = Gamma; 3 = Beta.
 #' @param asigma Numeric positive constant. Shape parameter of the gamma prior
 #' on the standard deviation of the mixture kernel \code{distr.k}.
 #' @param bsigma Numeric positive constant. Rate parameter of the gamma prior
 #' on the standard deviation of the mixture kernel \code{distr.k}.
-#' @param delta Numeric positive constant. Metropolis-Hastings proposal
+#' @param delta_S Numeric positive constant. Metropolis-Hastings proposal
 #' variation coefficient for sampling sigma.
-#' @param Delta Numeric positive constant. Metropolis-Hastings proposal
+#' @param delta_U Numeric positive constant. Metropolis-Hastings proposal
 #' variation coefficient for sampling the latent U.
 #' @param Meps Numeric constant. Relative error of the jump sizes in the
 #' continuous component of the process. Smaller values imply larger number of
@@ -116,15 +114,7 @@
 #' # Fitting the model under default specifications
 #' out <- MixNRMI1cens(x, x)
 #' # Plotting density estimate + 95% credible interval
-#' attach(out)
-#' m <- ncol(qx)
-#' ymax <- max(qx[, m])
-#' par(mfrow = c(1, 1))
-#' hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
-#' lines(xx, qx[, 1], lwd = 2)
-#' lines(xx, qx[, 2], lty = 3, col = 4)
-#' lines(xx, qx[, m], lty = 3, col = 4)
-#' detach()
+#' plot(out)
 #' }
 #'
 #' \dontrun{
@@ -135,12 +125,7 @@
 #' out <- MixNRMI1cens(xleft = salinity$left, xright = salinity$right, Nit = 5000)
 #' # Plotting density estimate + 95% credible interval
 #' attach(out)
-#' m <- ncol(qx)
-#' ymax <- max(qx[, m])
-#' par(mfrow = c(1, 1))
-#' plot(xx, qx$"q0.5", lwd = 2, type = "l", ylab = "Density", xlab = "Data")
-#' lines(xx, qx[, 2], lty = 3, col = 4)
-#' lines(xx, qx[, m], lty = 3, col = 4)
+#' plot(out)
 #' # Plotting number of clusters
 #' par(mfrow = c(2, 1))
 #' plot(R, type = "l", main = "Trace of R")
@@ -151,23 +136,27 @@
 #' @export MixNRMI1cens
 MixNRMI1cens <-
   function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
-             Kappa = 0, Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5,
-             bsigma = 0.5, delta = 3, Delta = 2, Meps = 0.01, Nx = 150,
-             Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
-             extras = TRUE) {
+           Kappa = 0, Gama = 0.4, distr.k = "normal", distr.p0 = "normal", asigma = 0.5,
+           bsigma = 0.5, delta_S = 3, delta_U = 2, Meps = 0.01, Nx = 150,
+           Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
+           extras = TRUE) {
     if (is.null(distr.k)) {
       stop("Argument distr.k is NULL. Should be provided. See help for details.")
     }
     if (is.null(distr.p0)) {
       stop("Argument distr.p0 is NULL. Should be provided. See help for details.")
     }
+    distr.k <- process_dist_name(distr.k)
+    distr.p0 <- process_dist_name(distr.p0)
     tInit <- proc.time()
     cens_data_check(xleft, xright)
     xpoint <- as.numeric(na.omit(0.5 * (xleft + xright)))
     npoint <- length(xpoint)
     censor_code <- censor_code_rl(xleft, xright)
-    censor_code_filters <- lapply(0:3, FUN = function(x) censor_code ==
-        x)
+    censor_code_filters <- lapply(0:3, FUN = function(x) {
+      censor_code ==
+        x
+    })
     names(censor_code_filters) <- 0:3
     n <- length(xleft)
     y <- seq(n)
@@ -207,7 +196,7 @@ MixNRMI1cens <-
       if (Gama != 0) {
         u <- gs3(u,
           n = n, r = r, alpha = Alpha, beta = Kappa,
-          gama = Gama, delta = Delta
+          gama = Gama, delta = delta_U
         )
       }
       JiC <- MvInv(
@@ -235,7 +224,7 @@ MixNRMI1cens <-
       sigma <- gs5cens2(
         sigma = sigma, xleft = xleft, xright = xright,
         censor_code = censor_code, y = y, distr = distr.k,
-        asigma = asigma, bsigma = bsigma, delta = delta
+        asigma = asigma, bsigma = bsigma, delta = delta_S
       )
       Fxx[, j] <- fcondXA(xx,
         distr = distr.k, Tau = Tau, J = J,
@@ -288,62 +277,5 @@ MixNRMI1cens <-
       res$weights <- weights
       res$Js <- Js
     }
-    return(structure(res, class = "NRMI1cens"))
+    return(structure(res, class = "NRMI1"))
   }
-
-
-
-#' Plot the density estimate and the 95\% credible interval
-#'
-#' The density estimate is the mean posterior density computed on the data
-#' points. It is not possible to display a histogram for censored data.
-#'
-#'
-#' @param x A fitted object of class MixNRMI1cens
-#' @param ... Further arguments to be passed to generic functions, ignored at the moment
-#' @return A graph with the density estimate, the 95\% credible interval
-#' @export
-#' @examples
-#'
-#' data(salinity)
-#' out <- MixNRMI1cens(salinity$left, salinity$right, Nit = 50)
-#' plot(out)
-plot.NRMI1cens <- function(x, ...) {
-  plotfit_censored(x)
-}
-
-#' S3 method for class 'MixNRMI1cens'
-#'
-#' @param x A fitted object of class MixNRMI1cens
-#' @param ... Further arguments to be passed to generic functions, ignored at the moment
-#'
-#' @return A visualization of the important information about the object
-#' @export
-#'
-#' @examples
-#' data(salinity)
-#' out <- MixNRMI1cens(salinity$left, salinity$right, Nit = 50)
-#' print(out)
-print.NRMI1cens <- function(x, ...) {
-  kernel_name <- tolower(give_kernel_name(x$distr.k))
-  writeLines(paste("Fit of a semiparametric", kernel_name, "mixture model on", nrow(x$data), "data points.\nThe MCMC algorithm was run for", x$Nit, "iterations with", 100 * x$Pbi, "% discarded for burn-in."))
-}
-
-#' S3 method for class 'MixNRMI1cens'
-#'
-#' @param object A fitted object of class NRMI1cens
-#' @param number_of_clusters Whether to compute the optimal number of clusters, which can be a time-consuming operation (see \code{\link{compute_optimal_clustering}})
-#' @param ... Further arguments to be passed to generic function, ignored at the moment
-#'
-#' @return Summary of some relevant information on the fit
-#' @export
-#'
-#' @examples
-#' data(salinity)
-#' out <- MixNRMI1cens(salinity$left, salinity$right, Nit = 50)
-#' summary(out)
-summary.NRMI1cens <- function(object, number_of_clusters = FALSE, ...) {
-  kernel_name <- tolower(give_kernel_name(object$distr.k))
-  kernel_comment <- paste("A semiparametric", kernel_name, "mixture model was used.")
-  summarytext(object, kernel_comment, number_of_clusters = number_of_clusters)
-}

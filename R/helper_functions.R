@@ -15,7 +15,7 @@ is_semiparametric <- function(fit) {
   return(!is.null(fit$S))
 }
 
-convert_nan_to_0 = function(vec){
+convert_nan_to_0 <- function(vec) {
   ifelse(is.nan(vec), yes = 0, no = vec)
 }
 
@@ -111,7 +111,6 @@ is_censored <- function(dat) {
 #' @param Nit Length of the MCMC chain
 #' @param thinning_to Desired number of iterations after thinning.
 #' @return an integer vector of the MCMC iterations retained.
-#' @export compute_thinning_grid
 compute_thinning_grid <- function(Nit, thinning_to = 10) {
   if (Nit <= 2 * thinning_to) { # Factor 2 to reduce the probability of having the same iterations selected twice
     it_retained <- 1:Nit
@@ -132,8 +131,18 @@ compute_thinning_grid <- function(Nit, thinning_to = 10) {
 #'
 #' @return x + y
 #'
-#' @examples
-#' BNPdensity:::add(1, 2)
 add <- function(x, y) {
   x + y
 }
+
+#' Extract the Conditional Predictive Ordinates (CPOs) from a fitted object
+#'
+#' @param object A fit obtained through one of the NRMI functions
+#' @param ...
+#'
+#' @return A vector of Conditional Predictive Ordinates (CPOs)
+#' @export
+cpo <- function(object, ...) {
+  UseMethod("cpo")
+}
+cpo.default <- function(object, ...) "Unknown class"

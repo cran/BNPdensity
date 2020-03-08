@@ -9,7 +9,7 @@ rk(n, distr = NULL, mu = NULL, sigma = NULL)
 \description{
 This function simulates from a density.  There are 4 density options (1 =
 Gaussian, 2 = Gamma, 3 = Beta, 4 = double exponential, 5 = lognormal). All
-densities are parametrized in terms of mean and standard deviation.
+densities are parameterized in terms of mean and standard deviation.
 }
 \details{
 For internal use.
@@ -19,7 +19,7 @@ For internal use.
 ## The function is currently defined as
 function(n, distr = NULL, mu = NULL, sigma = NULL) {
   if (is.null(distr)) {
-    stop("Argument \\"distr\\" should be defined numeric with possible values 1,2,3,4 or 5")
+    stop("Argument \"distr\" should be defined numeric with possible values 1,2,3,4 or 5")
   }
   else if (distr == 1) {
     a <- ifelse(is.null(mu), 0, mu)
@@ -50,14 +50,14 @@ function(n, distr = NULL, mu = NULL, sigma = NULL) {
       1) * (1 - mu))
     if (any(c(a, b) <= 0)) {
       stop(paste(
-        "\\nNegative Beta parameters:\\n a =", a,
-        ";\\t b =", b
+        "\nNegative Beta parameters:\n a =", a,
+        ";\t b =", b
       ))
     }
     rk <- rbeta(n, shape1 = a, shape2 = b)
   }
   else {
-    stop("Argument \\"distr\\" should be defined numeric with possible values 1,2,3,4 or 5")
+    stop("Argument \"distr\" should be defined numeric with possible values 1,2,3,4 or 5")
   }
   return(rk)
 }

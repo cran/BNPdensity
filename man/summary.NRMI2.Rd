@@ -7,7 +7,7 @@
 \method{summary}{NRMI2}(object, number_of_clusters = FALSE, ...)
 }
 \arguments{
-\item{object}{A fitted object of class NRMI1cens}
+\item{object}{A fitted object of class NRMI2}
 
 \item{number_of_clusters}{Whether to compute the optimal number of clusters, which can be a time-consuming operation (see \code{\link{compute_optimal_clustering}})}
 
@@ -21,6 +21,10 @@ S3 method for class 'MixNRMI2'
 }
 \examples{
 data(acidity)
-out <- MixNRMI2(acidity, Nit = 50)
+out <- MixNRMI2(acidity, Nit = 20)
+summary(out)
+
+data(salinity)
+out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 20)
 summary(out)
 }

@@ -4,12 +4,14 @@
 \alias{convert_to_mcmc}
 \title{Convert the output of multMixNRMI into a coda mcmc object}
 \usage{
-convert_to_mcmc(fitlist, thinning_to = 1000)
+convert_to_mcmc(fitlist, thinning_to = 1000, ncores = parallel::detectCores())
 }
 \arguments{
 \item{fitlist}{Output of multMixNRMI.}
 
 \item{thinning_to}{Final length of the chain after thinning.}
+
+\item{ncores}{Specify the number of cores to use in the conversion}
 }
 \value{
 a coda::mcmc object

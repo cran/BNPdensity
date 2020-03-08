@@ -4,16 +4,23 @@
 \alias{as.mcmc.multNRMI}
 \title{Convert the output of multMixNRMI into a coda mcmc object}
 \usage{
-\method{as.mcmc}{multNRMI}(fitlist, thinning_to = 1000)
+\method{as.mcmc}{multNRMI}(fitlist, thinning_to = 1000, ncores = parallel::detectCores())
 }
 \arguments{
 \item{fitlist}{Output of multMixNRMI.}
 
 \item{thinning_to}{Final length of the chain after thinning.}
+
+\item{ncores}{Specify the number of cores to use in the conversion}
 }
 \value{
 a coda::mcmc object
 }
 \description{
 Convert the output of multMixNRMI into a coda mcmc object
+}
+\examples{
+data(acidity)
+out <- multMixNRMI1(acidity, parallel = TRUE, Nit = 10, ncores = 2)
+coda::as.mcmc(out, ncores = 2)
 }

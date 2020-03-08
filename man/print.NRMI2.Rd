@@ -18,7 +18,12 @@ A visualization of the important information about the object
 S3 method for class 'MixNRMI2'
 }
 \examples{
+#' ## Example for censored data
 data(acidity)
-out <- MixNRMI2(acidity, Nit = 50)
+out <- MixNRMI2(acidity, Nit = 20)
+print(out)
+
+data(salinity)
+out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 20)
 print(out)
 }

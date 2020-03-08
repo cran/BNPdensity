@@ -82,7 +82,7 @@ expected_number_of_components_PY <- function(n, Alpha, Gama, ntrunc = NULL, sile
 #' @return A real value which approximates the expected number of components
 #'
 #' Reference: P. De Blasi, S. Favaro, A. Lijoi, R. H. Mena, I. Prünster, and M.
-#' Ruggiero, “Are gibbs-type priors the most natural generalization of the
+#' Ruggiero, “Are Gibbs-type priors the most natural generalization of the
 #' Dirichlet process?,” IEEE Trans. Pattern Anal. Mach. Intell., vol. 37, no.
 #' 2, pp. 212–229, 2015.
 #' @examples
@@ -167,7 +167,7 @@ plot_prior_number_of_components <- function(n, Gama, Alpha = 1, grid = NULL, sil
   Pk_Dirichlet <- data.frame(K = grid, Pk = Vectorize(Pkn_Dirichlet, vectorize.args = "k")(grid, n, Alpha), Process = "Dirichlet")
   writeLines("Computing the prior probability on the number of clusters for the Stable process")
   Pk_Stable <- data.frame(K = grid, Pk = unlist(lapply(Vectorize(Pkn_PY, vectorize.args = "k")(grid, n, 0, Gama, silence), asNumeric_no_warning)), Process = "Stable")
-  Pk_Stable$Pk = convert_nan_to_0(Pk_Stable$Pk) #Correct when the numbers are 0 up to machine precision.
+  Pk_Stable$Pk <- convert_nan_to_0(Pk_Stable$Pk) # Correct when the numbers are 0 up to machine precision.
   to_plot <- rbind(
     Pk_Dirichlet,
     Pk_Stable
@@ -189,16 +189,20 @@ plot_prior_number_of_components <- function(n, Gama, Alpha = 1, grid = NULL, sil
 #'
 #' @return a "numeric" number
 asNumeric_no_warning <- function(x) {
-  tryCatch({
-    Rmpfr::asNumeric(x)
-  }, warning = function(w) {
-    if (grepl(pattern = "inefficient", x = as.character(w))) {
-      suppressWarnings(Rmpfr::asNumeric(x))
+  tryCatch(
+    {
+      Rmpfr::asNumeric(x)
+    },
+    warning = function(w) {
+      if (grepl(pattern = "inefficient", x = as.character(w))) {
+        suppressWarnings(Rmpfr::asNumeric(x))
+      }
+      else {
+        w
+      }
+    },
+    error = function(e) {
+      print(paste("error:", e))
     }
-    else {
-      w
-    }
-  }, error = function(e) {
-    print(paste("error:", e))
-  })
+  )
 }
