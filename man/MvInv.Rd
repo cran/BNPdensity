@@ -4,30 +4,38 @@
 \alias{MvInv}
 \title{Invert jump heights function}
 \usage{
-MvInv(eps, u = 0.5, alpha = 1, beta = 1, gama = 1/2, N = 3001)
+MvInv(eps, u = 0.5, alpha = 1, kappa = 1, gama = 1/2, N = 3001)
 }
-\description{
-Determines the jump heights of an increasing additive process by inverting
-the M(v) function.
-}
-\details{
-For internal use.
-}
-\examples{
+\arguments{
+\item{eps}{Dummy argument kept for consistency with past versions of the functions}
 
-## The function is currently defined as
-function(eps, u = 0.5, alpha = 1, beta = 1, gama = 1 / 2, N = 3001) {
+\item{u}{Real number. The value of the latent variable at the current step.}
+
+\item{alpha}{Numeric constant. Total mass of the centering measure.}
+
+\item{kappa}{Numeric positive constant.}
+
+\item{gama}{Numeric constant. Discount parameter of the NRMI process.}
+
+\item{N}{Number of steps in the discretization scheme for the grid inversion.
+
+## The function has been optimised but it is morally defined as:
+function(eps, u = 0.5, alpha = 1, kappa = 1, gama = 1 / 2, N = 3001) {
   n <- length(w)
   v <- rep(NA, n)
   x <- -log(seq(from = exp(-1e-05), to = exp(-10), length = N))
   f <- alpha / gamma(1 - gama) * x^(-(1 + gama)) * exp(-(u +
-    beta) * x)
+    kappa) * x)
   dx <- diff(x)
   h <- (f[-1] + f[-N]) / 2
   Mv <- rep(0, N)
   for (i in seq(N - 1, 1)) Mv[i] <- Mv[i + 1] + dx[i] * h[i]
   for (j in seq(n)) v[j] <- x[which.min(Mv > w[j])]
   return(v)
+}}
 }
+\description{
+Determines the jump heights of an increasing additive process by inverting
+the M(v) function. Use a truncation level based on expected moments of the NGG process (\code{\link{thresholdGG}}).
+For internal use.
 }
-\keyword{internal}
