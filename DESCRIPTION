@@ -2,7 +2,7 @@ Package: BNPdensity
 Type: Package
 Title: Ferguson-Klass Type Algorithm for Posterior Normalized Random
         Measures
-Version: 2021.5.4
+Version: 2023.3.8
 Authors@R: c(
   person("Julyan", "Arbel", role = c("ctb")),
   person("Ernesto", "Barrios", role = c("aut"), email = "ebarrios@itam.mx"),
@@ -16,13 +16,13 @@ License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: yes
 ByteCompile: yes
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Depends: R(>= 3.5.0)
 Maintainer: Guillaume Kon Kam King <guillaume.konkamking.work@gmail.com>
 Imports: ggplot2, gridExtra, survival, coda, dplyr, tidyr, viridis
 Suggests: GreedyEPL, Rmpfr, gmp, knitr, rmarkdown, testthat, BNPmix
 NeedsCompilation: no
-Packaged: 2021-05-13 10:13:14 UTC; gkonkamking
+Packaged: 2023-03-24 14:47:00 UTC; gkonkamking
 Author: Julyan Arbel [ctb],
   Ernesto Barrios [aut],
   Guillaume Kon Kam King [aut, cre],
@@ -30,4 +30,4 @@ Author: Julyan Arbel [ctb],
   Luis E. Nieto-Barajas [aut],
   Igor Prünster [aut]
 Repository: CRAN
-Date/Publication: 2021-05-13 10:52:11 UTC
+Date/Publication: 2023-03-24 15:10:02 UTC

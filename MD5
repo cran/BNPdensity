@@ -1,5 +1,5 @@
 14df954f142b655388f56da462152505 *CHANGES
-fd626052ba13d35592308c6eacc23268 *DESCRIPTION
+8895e2751a103bd00e209cadfff2ebe5 *DESCRIPTION
 7ecf02d115e947e87de558b1293cece2 *NAMESPACE
 a32ffff039247ea327fb634f34cd4e64 *R/BNPdensity-package.R
 0a2bcc5591a5ec6e7a1d317413ff2b29 *R/GOFplots.R
@@ -47,7 +47,7 @@ db274adf1aa3131d1e07df30e54a56f6 *R/gs4cens2.R
 fd959df86505227b126a367ef1d2aaa6 *R/gsYZstarcens2.R
 3fa1d229eaf21e47d14cdd63d74a0887 *R/helper_functions.R
 e786383e56d04db2cc7d06fd481ced83 *R/mixture_density_functions.R
-b71c39fa68c2fd0203e9ca01eb70ee55 *R/multMixNRMI.R
+7b37204eea1c789eda6b45b0d4ea1fc8 *R/multMixNRMI.R
 92a5e6d72547a8783c3ec67cf5c35f90 *R/noncentral_generalised_factorial_coefficient.R
 61cf4f325b4993085d0e95cd3c8f0abe *R/p0.R
 61f9cbe5987c93b1ce3970dac2bbac4a *R/phalfcauchy.R
@@ -104,7 +104,7 @@ faea5073a179e25eea3aac5b8e86ca5c *man/Mv.Rd
 954ce9894c9907a28daac90e339248fa *man/MvInv.Rd
 a213d4fa04f29fc0ab17c71730b7761b *man/acidity.Rd
 7297d5a63deeb23ce784d750ee71adf8 *man/add.Rd
-4f94fd1391b3d52f2025fd5fdb91943b *man/as.mcmc.multNRMI.Rd
+fa5f032427ac991f03e101e5af03525e *man/as.mcmc.multNRMI.Rd
 071b34e899adeb35e7d7ebaad73e4d96 *man/asNumeric_no_warning.Rd
 96cc42085bbf66171a1a5c3a5bb9120b *man/cens_data_check.Rd
 f2529d6138ee79e665960e1ba936f95e *man/censor_code_rl.Rd
